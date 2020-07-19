@@ -1,24 +1,28 @@
 package Task2;
 
+import static java.lang.Thread.sleep;
+
 public class Kitchen implements Runnable {
 
     Object lockKnife = new Object();
     Object lockBoard = new Object();
 
-    public void doSalad() {
+    public synchronized void doSalad() {
         synchronized (lockKnife) {
             System.out.println(Thread.currentThread().getName()
                     + " взяла нож");
+
             synchronized (lockBoard) {
                 System.out.println(Thread.currentThread().getName()
                         + " взяла разделочную доску");
                 System.out.println(Thread.currentThread().getName()
                         + " делает салат");
             }
+
         }
     }
 
-    public void doSandwiche() {
+    public synchronized void doSandwiche() {
         synchronized (lockBoard) {
             System.out.println(Thread.currentThread().getName()
                     + " взяла разделочную доску");
@@ -28,13 +32,21 @@ public class Kitchen implements Runnable {
                 System.out.println(Thread.currentThread().getName()
                         + " делает бутерброды");
             }
+
         }
     }
 
     public void run() {
-        while(true) {
+        int t = 0;
+        while (t < 10) {
             doSalad();
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             doSandwiche();
+            t++;
         }
     }
 }
