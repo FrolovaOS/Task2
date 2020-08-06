@@ -1,4 +1,4 @@
-package Task2;
+package task2;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
